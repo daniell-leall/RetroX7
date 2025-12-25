@@ -12,6 +12,9 @@ set "RETROBAT_BIOS=%RETROBAT_ROOT%\bios"
 :: EmulationStation config (FILE)
 set "RETROBAT_ES_CONFIG=%RETROBAT_ROOT%\emulationstation\.emulationstation\es_settings.cfg"
 
+:: EmulationStation music (FOLDER)
+set "RETROBAT_ES_MUSIC=%RETROBAT_ROOT%\emulationstation\.emulationstation\music"
+
 set "BACKUP_SUFFIX=_backup"
 
 :: Console list (somente para restaurar backups)
@@ -110,6 +113,30 @@ if exist "%RETROBAT_ES_CONFIG%%BACKUP_SUFFIX%" (
     echo   EmulationStation config restored successfully.
 ) else (
     echo   es_settings.cfg backup not found, skipping.
+)
+
+:: -----------------------------------------------------
+:: Restore EmulationStation music folder
+:: -----------------------------------------------------
+echo.
+echo Restoring EmulationStation music folder...
+
+:: Remove symlink if it exists
+if exist "%RETROBAT_ES_MUSIC%" (
+    fsutil reparsepoint query "%RETROBAT_ES_MUSIC%" >nul 2>&1
+    if not errorlevel 1 (
+        echo   Removing symbolic link: music
+        rmdir "%RETROBAT_ES_MUSIC%"
+    )
+)
+
+:: Restore backup if it exists
+if exist "%RETROBAT_ES_MUSIC%%BACKUP_SUFFIX%" (
+    echo   Restoring music folder from backup
+    ren "%RETROBAT_ES_MUSIC%%BACKUP_SUFFIX%" "music"
+    echo   Music folder restored successfully.
+) else (
+    echo   Music backup not found, skipping.
 )
 
 echo.

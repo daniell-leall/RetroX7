@@ -18,6 +18,10 @@ set "SOURCE_BIOS=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\bios"
 set "RETROBAT_ES_CONFIG=%RETROBAT_ROOT%\emulationstation\.emulationstation\es_settings.cfg"
 set "SOURCE_ES_CONFIG=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\config\es_settings.cfg"
 
+:: --- EmulationStation music (FOLDER) ---
+set "RETROBAT_ES_MUSIC=%RETROBAT_ROOT%\emulationstation\.emulationstation\music"
+set "SOURCE_ES_MUSIC=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\music"
+
 :: =====================================================
 :: CONSOLE DEFINITIONS
 :: =====================================================
@@ -134,6 +138,35 @@ if exist "%DEST%" (
 
 mklink "%DEST%" "%SRC%" >nul
 echo Linked EmulationStation config file
+
+:: =====================================================
+:: CREATE EMULATIONSTATION MUSIC FOLDER LINK
+:: =====================================================
+echo.
+echo Creating EmulationStation music symbolic link
+echo Source: %SOURCE_ES_MUSIC%
+echo Destination: %RETROBAT_ES_MUSIC%
+echo.
+
+set "DEST=%RETROBAT_ES_MUSIC%"
+set "SRC=%SOURCE_ES_MUSIC%"
+
+if exist "%DEST%" (
+    call :IS_SYMLINK "%DEST%"
+    if errorlevel 1 (
+        if not exist "%DEST%%BACKUP_SUFFIX%" (
+            ren "%DEST%" "music%BACKUP_SUFFIX%"
+        )
+    )
+)
+
+if exist "%DEST%" (
+    call :IS_SYMLINK "%DEST%"
+    if not errorlevel 1 rmdir "%DEST%"
+)
+
+mklink /D "%DEST%" "%SRC%" >nul
+echo Linked EmulationStation music folder
 
 echo.
 echo All symbolic links created successfully.
