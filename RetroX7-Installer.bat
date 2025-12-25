@@ -175,14 +175,14 @@ echo.
 if exist "%DEST%" rmdir /s /q "%DEST%"
 mkdir "%DEST%"
 
-move "%TEMPX7DIR%\RetroX7-main\RetroX7\*" "%DEST%" >nul
+xcopy "%TEMPX7DIR%\RetroX7-main\RetroX7\*" "%DEST%\" /E /I /Y >nul
 
 echo.
 echo Cleaning temporary files...
 echo.
 
-rmdir /s /q "%TEMPX7DIR%"
-del /f /q "%TEMPZIP%"
+:: rmdir /s /q "%TEMPX7DIR%"
+:: del /f /q "%TEMPZIP%"
 
 if exist "%RETROBATFILE%" del /f /q "%RETROBATFILE%"
 if exist "%WINFSPFILE%" del /f /q "%WINFSPFILE%"
