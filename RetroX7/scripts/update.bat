@@ -91,10 +91,6 @@ rmdir /s /q "%TEMPX7DIR%"
 del /f /q "%TEMPZIP%"
 
 echo.
-echo ==================================================
 echo RetroX7 update completed successfully!
-echo ==================================================
-echo.
-
-pause
+timeout /t 3 >nul
 exit /b
