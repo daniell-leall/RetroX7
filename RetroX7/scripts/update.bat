@@ -27,8 +27,26 @@ echo ==================================================
 echo.
 
 :: ===============================
+:: PRE-CLEAN TEMP (IMPORTANT)
+:: ===============================
+echo Preparing update environment...
+echo Cleaning previous temporary files...
+echo.
+
+if exist "%TEMPZIP%" (
+    echo Removing old ZIP...
+    del /f /q "%TEMPZIP%"
+)
+
+if exist "%TEMPX7DIR%" (
+    echo Removing old extracted folder...
+    rmdir /s /q "%TEMPX7DIR%"
+)
+
+:: ===============================
 :: Download ZIP
 :: ===============================
+echo.
 echo Downloading update package...
 echo.
 
@@ -43,7 +61,6 @@ if not exist "%TEMPZIP%" (
 :: ===============================
 :: Prepare temp folder
 :: ===============================
-if exist "%TEMPX7DIR%" rmdir /s /q "%TEMPX7DIR%"
 mkdir "%TEMPX7DIR%"
 
 :: ===============================
@@ -81,7 +98,7 @@ echo Updating version file...
 curl.exe -s -L "%GITHUB_VERSION_URL%" > "%VERSION_FILE%"
 
 :: ===============================
-:: Cleanup TEMP
+:: Cleanup TEMP (post-update)
 :: ===============================
 echo.
 echo Cleaning temporary files...
