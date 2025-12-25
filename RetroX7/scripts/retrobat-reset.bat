@@ -9,6 +9,9 @@ set "RETROBAT_ROOT=C:\RetroBat"
 set "RETROBAT_ROMS=%RETROBAT_ROOT%\roms"
 set "RETROBAT_BIOS=%RETROBAT_ROOT%\bios"
 
+:: EmulationStation config (FILE)
+set "RETROBAT_ES_CONFIG=%RETROBAT_ROOT%\emulationstation\.emulationstation\es_settings.cfg"
+
 set "BACKUP_SUFFIX=_backup"
 
 :: Console list (somente para restaurar backups)
@@ -43,7 +46,9 @@ echo Restoring default RetroBat structure
 echo ===============================================
 echo.
 
+:: -----------------------------------------------------
 :: Remove ROM symlinks
+:: -----------------------------------------------------
 echo Removing ROM symbolic links...
 for /d %%D in ("%RETROBAT_ROMS%\*") do (
     fsutil reparsepoint query "%%D" >nul 2>&1
@@ -53,7 +58,9 @@ for /d %%D in ("%RETROBAT_ROMS%\*") do (
     )
 )
 
+:: -----------------------------------------------------
 :: Restore ROM folders from backup
+:: -----------------------------------------------------
 echo.
 echo Restoring ROM folders from backups...
 for /f "usebackq tokens=1 delims==" %%A in ("%CONSOLE_LIST%") do (
@@ -68,7 +75,9 @@ for /f "usebackq tokens=1 delims==" %%A in ("%CONSOLE_LIST%") do (
     )
 )
 
+:: -----------------------------------------------------
 :: Restore BIOS from backup
+:: -----------------------------------------------------
 echo.
 if exist "%RETROBAT_BIOS%%BACKUP_SUFFIX%" (
     echo Restoring BIOS folder...
@@ -77,6 +86,30 @@ if exist "%RETROBAT_BIOS%%BACKUP_SUFFIX%" (
     echo   BIOS restored successfully.
 ) else (
     echo BIOS backup not found, skipping.
+)
+
+:: -----------------------------------------------------
+:: Restore EmulationStation config file
+:: -----------------------------------------------------
+echo.
+echo Restoring EmulationStation configuration file...
+
+:: Remove symlink if it exists
+if exist "%RETROBAT_ES_CONFIG%" (
+    fsutil reparsepoint query "%RETROBAT_ES_CONFIG%" >nul 2>&1
+    if not errorlevel 1 (
+        echo   Removing symbolic link: es_settings.cfg
+        del "%RETROBAT_ES_CONFIG%"
+    )
+)
+
+:: Restore backup if it exists
+if exist "%RETROBAT_ES_CONFIG%%BACKUP_SUFFIX%" (
+    echo   Restoring es_settings.cfg from backup
+    ren "%RETROBAT_ES_CONFIG%%BACKUP_SUFFIX%" "es_settings.cfg"
+    echo   EmulationStation config restored successfully.
+) else (
+    echo   es_settings.cfg backup not found, skipping.
 )
 
 echo.

@@ -14,6 +14,10 @@ set "BACKUP_SUFFIX=_backup"
 set "SOURCE_BASE=C:\RetroX7\mnt\sftpgo\3. Platforms"
 set "SOURCE_BIOS=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\bios"
 
+:: --- EmulationStation settings (FILE) ---
+set "RETROBAT_ES_CONFIG=%RETROBAT_ROOT%\emulationstation\.emulationstation\es_settings.cfg"
+set "SOURCE_ES_CONFIG=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\config\es_settings.cfg"
+
 :: =====================================================
 :: CONSOLE DEFINITIONS
 :: =====================================================
@@ -101,6 +105,35 @@ if exist "%DEST%" (
 
 mklink /D "%DEST%" "%SRC%" >nul
 echo Linked BIOS directory
+
+:: =====================================================
+:: CREATE EMULATIONSTATION CONFIG FILE LINK
+:: =====================================================
+echo.
+echo Creating EmulationStation config symbolic link
+echo Source: %SOURCE_ES_CONFIG%
+echo Destination: %RETROBAT_ES_CONFIG%
+echo.
+
+set "DEST=%RETROBAT_ES_CONFIG%"
+set "SRC=%SOURCE_ES_CONFIG%"
+
+if exist "%DEST%" (
+    call :IS_SYMLINK "%DEST%"
+    if errorlevel 1 (
+        if not exist "%DEST%%BACKUP_SUFFIX%" (
+            ren "%DEST%" "es_settings.cfg%BACKUP_SUFFIX%"
+        )
+    )
+)
+
+if exist "%DEST%" (
+    call :IS_SYMLINK "%DEST%"
+    if not errorlevel 1 del "%DEST%"
+)
+
+mklink "%DEST%" "%SRC%" >nul
+echo Linked EmulationStation config file
 
 echo.
 echo All symbolic links created successfully.
