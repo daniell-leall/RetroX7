@@ -100,17 +100,9 @@ echo ==================================================
 echo.
 echo A new connection window will be opened.
 echo.
-echo IMPORTANT:
-echo - Keep the connection window OPEN to stay connected.
-echo - Closing that window will DISCONNECT the network.
-echo.
-timeout /t 5 >nul
+timeout /t 3 >nul
 
-if exist "C:\RetroX7\mnt\sftpgo" (
-    rmdir /s /q "C:\RetroX7\mnt\sftpgo"
-)
-
-start "RetroX7 Network Connection" "%RCLONEDIR%\rclone.exe" mount SFTPGo: C:\RetroX7\mnt\sftpgo --vfs-cache-mode minimal
+start "RetroX7 Network Connection" "%SCRIPTSDIR%\network-connect.bat"
 
 goto MENU
 
@@ -171,7 +163,7 @@ cls
 echo ==================================================
 echo Resetting RetroBat to default settings
 echo ==================================================
-call "%SCRIPTSDIR%\retrobat-reset.bat"
+call "%SCRIPTSDIR%\reset-retrobat.bat"
 
 goto MENU
 
