@@ -72,9 +72,9 @@ echo ==================================================
 echo.
 echo   [1] Start RetroX7 Network
 echo   [2] Start RetroBat
-echo   [3] Reconfigure RetroX7 Connection
-echo   [4] Reconfigure RetroX7 Folders
-echo   [5] Reset RetroBat (Default Settings)
+echo   [3] Reconfigure Network Connection
+echo   [4] Rebuild RetroX7 Links & Folders
+echo   [5] Reset RetroBat to Default Settings
 echo   [6] Check for Updates
 echo   [0] Exit
 echo.
