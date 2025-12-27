@@ -3,7 +3,6 @@ setlocal EnableExtensions DisableDelayedExpansion
 
 title RetroX7 - Configuration
 
-:: Paths
 set BASEDIR=C:\RetroX7
 set RCLONEDIR=%BASEDIR%\rclone
 set CONFIGDIR=%RCLONEDIR%\.config
@@ -17,55 +16,72 @@ if not exist "%CONFIGDIR%" mkdir "%CONFIGDIR%"
 
 cls
 echo ==================================================
-echo RetroX7 - Configuration
+echo              RetroX7 - Configuration
 echo ==================================================
 echo.
 
-:: Username
-set /p RX_USER=Username: 
+:CREDENTIALS
+cls
+echo ==================================================
+echo            The service is operational
+echo ==================================================
+echo.
+echo Please enter your credentials below.
+echo.
 
-:: Password (visível no CMD)
-set /p RX_PASS=Password: 
+set /p RX_USER=" Username: "
+set /p RX_PASS=" Password: "
 
-:: Gravar senha temporariamente
 echo %RX_PASS%>"%TMPPASS%"
-
-:: Limpar variável e reler do arquivo
 set RX_PASS=
 set /p RX_PASS=<"%TMPPASS%"
 
-:: Criacao do rclone config
 cls
-echo Criando configuracao do rclone...
-"%RCLONEDIR%\rclone.exe" config create SFTPGo webdav url "https://retrox7.darkwebhub.store" vendor "other" user "%RX_USER%" pass "%RX_PASS%"
-if errorlevel 1 (
-    echo ERRO: falha ao criar configuracao do rclone.
-    del "%TMPPASS%" >nul 2>&1
-    exit /b
-)
+echo Creating rclone configuration...
+"%RCLONEDIR%\rclone.exe" config create SFTPGo webdav ^
+    url "https://retrox7.darkwebhub.store" ^
+    vendor "other" ^
+    user "%RX_USER%" ^
+    pass "%RX_PASS%"
 
-:: Teste de autenticacao
+if errorlevel 1 goto AUTH_ERROR
+
 cls
-echo Testando conexao com o servidor...
+echo Testing server authentication...
 "%RCLONEDIR%\rclone.exe" lsd SFTPGo:
-if errorlevel 1 (
-    echo ERRO: falha na autenticacao.
-    del "%CONFIGFILE%" >nul 2>&1
-    del "%TMPPASS%" >nul 2>&1
-    exit /b
-)
 
-:: Marcar como configurado
+if errorlevel 1 goto AUTH_ERROR
+
 echo configured > "%CONFIGFLAG%"
 
-:: Cleanup
 del "%TMPPASS%" >nul 2>&1
 set RX_PASS=
 
 cls
 echo ==================================================
-echo CONFIGURACAO CONCLUIDA COM SUCESSO
+echo       CONFIGURATION COMPLETED SUCCESSFULLY
 echo ==================================================
-echo Arquivo .configured criado em:
+echo Configuration flag created at:
 echo %CONFIGFLAG%
+echo.
 exit /b
+
+:AUTH_ERROR
+del "%TMPPASS%" >nul 2>&1
+del "%CONFIGFILE%" >nul 2>&1
+
+cls
+echo ==================================================
+echo               AUTHENTICATION FAILED
+echo ==================================================
+echo.
+echo  Invalid username or password.
+echo.
+echo   [1] Try again
+echo   [0] Exit
+echo.
+
+choice /c 10 /n /m "Select an option: "
+
+if errorlevel 2 exit /b
+if errorlevel 1 goto CREDENTIALS

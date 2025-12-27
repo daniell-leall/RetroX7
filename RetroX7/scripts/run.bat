@@ -1,10 +1,8 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-:: Window title
 title RetroX7 - Network Launcher
 
-:: Base paths
 set BASEDIR=C:\RetroX7
 set SCRIPTSDIR=%BASEDIR%\scripts
 set RCLONEDIR=%BASEDIR%\rclone
@@ -12,24 +10,23 @@ set CONFIGDIR=%RCLONEDIR%\.config
 set CONFIGFILE=%CONFIGDIR%\rclone.conf
 set CONFIGFLAG=%CONFIGDIR%\.configured
 
-:: Update / version
 set VERSION_FILE=%BASEDIR%\version.txt
 set TEMP_REMOTE_VERSION=%TEMP%\retrox7_remote_version.txt
 set GITHUB_VERSION_URL=https://raw.githubusercontent.com/daniell-leall/RetroX7/refs/heads/main/RetroX7/version.txt
 
-:: RetroBat
 set RETROBATDIR=C:\RetroBat
 set RETROBATEXE=%RETROBATDIR%\RetroBat.exe
 
-:: Tell rclone where the config is
 set RCLONE_CONFIG=%CONFIGFILE%
 
 cls
 
-:: Automatic update check (startup)
+call "%SCRIPTSDIR%\check-connection.bat"
+
+if errorlevel 1 exit /b
+
 call :AUTO_CHECK_UPDATES
 
-:: Check configuration (first run)
 if not exist "%CONFIGFLAG%" (
     cls
     echo ==================================================
