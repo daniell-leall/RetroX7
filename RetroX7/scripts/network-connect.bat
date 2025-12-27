@@ -68,8 +68,8 @@ echo.
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
     --vfs-cache-mode full ^
-    --vfs-cache-max-age 24h ^
-    --vfs-cache-max-size 10G ^
+    --vfs-cache-max-age 30d ^
+    --vfs-cache-max-size 30G ^
     --vfs-read-chunk-size 32M ^
     --vfs-read-chunk-size-limit 2G ^
     --links ^
