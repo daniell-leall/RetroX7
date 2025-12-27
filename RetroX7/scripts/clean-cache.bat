@@ -3,16 +3,14 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 title RetroX7 - Clean rclone Cache
 
-:: ===============================
 :: Paths
-:: ===============================
 set "BASEDIR=C:\RetroX7"
 set "CACHE_DIR=%BASEDIR%\rclone\cache"
-set "KEEP_FILE=version.txt"  :: troque pelo nome do arquivo que quer manter
+set "KEEP_FILE=.gitkeep"  :: troque pelo nome do arquivo que quer manter
 
 cls
 echo ==================================================
-echo        Cleaning rclone Cache
+echo        Cleaning Cache
 echo ==================================================
 echo.
 
@@ -29,5 +27,5 @@ if exist "%CACHE_DIR%" (
 )
 
 echo.
-pause
+timeout /t 3 >nul
 exit /b

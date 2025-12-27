@@ -58,7 +58,6 @@ echo.
 echo   [1] Start RetroX7 Network
 echo   [2] Start RetroBat
 echo   [3] Settings
-echo.
 echo   [0] Exit
 echo.
 choice /C 1230 /N /M ">> Select an option: "
@@ -80,7 +79,6 @@ echo   [2] Rebuild RetroX7 Links ^& Folders
 echo   [3] Reset RetroBat to Default Settings
 echo   [4] Clean Cache
 echo   [5] Check for Updates
-echo.
 echo   [0] Back to Main Menu
 echo.
 choice /C 123450 /N /M ">> Select an option: "
@@ -166,7 +164,7 @@ echo.
 echo This will clean cached data used by RetroX7.
 echo.
 
-call "%SCRIPTSDIR%\cleancache.bat"
+call "%SCRIPTSDIR%\clean-cache.bat"
 
 echo.
 echo Cache cleaning completed.

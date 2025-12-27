@@ -2,9 +2,7 @@
 setlocal EnableDelayedExpansion
 title RetroX7 :: Create Symbolic Links
 
-:: =====================================================
 :: PATH CONFIGURATION
-:: =====================================================
 set "RETROBAT_ROOT=C:\RetroBat"
 set "RETROBAT_ROMS=%RETROBAT_ROOT%\roms"
 set "RETROBAT_BIOS=%RETROBAT_ROOT%\bios"
@@ -22,9 +20,7 @@ set "SOURCE_ES_CONFIG=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\config\
 set "RETROBAT_ES_MUSIC=%RETROBAT_ROOT%\emulationstation\.emulationstation\music"
 set "SOURCE_ES_MUSIC=C:\RetroX7\mnt\sftpgo\1. Retrobat - Core & Scripts\music"
 
-:: =====================================================
 :: CONSOLE DEFINITIONS
-:: =====================================================
 set "CONSOLE_LIST=%TEMP%\retro_x7_consoles.txt"
 
 (
@@ -47,9 +43,7 @@ echo saturn=Sega - Saturn\roms
 echo neogeo=SNK - Neo Geo\roms
 ) > "%CONSOLE_LIST%"
 
-:: =====================================================
 :: CREATE ROM LINKS
-:: =====================================================
 cls
 echo ===============================================
 echo Creating ROM symbolic links
@@ -81,9 +75,7 @@ for /f "usebackq tokens=1,2 delims==" %%A in ("%CONSOLE_LIST%") do (
     echo Linked ROMs: !RETRO_FOLDER!
 )
 
-:: =====================================================
 :: CREATE BIOS LINK
-:: =====================================================
 echo.
 echo Creating BIOS symbolic link
 echo Source: %SOURCE_BIOS%
@@ -110,9 +102,7 @@ if exist "%DEST%" (
 mklink /D "%DEST%" "%SRC%" >nul
 echo Linked BIOS directory
 
-:: =====================================================
 :: CREATE EMULATIONSTATION CONFIG FILE LINK
-:: =====================================================
 echo.
 echo Creating EmulationStation config symbolic link
 echo Source: %SOURCE_ES_CONFIG%
@@ -139,9 +129,7 @@ if exist "%DEST%" (
 mklink "%DEST%" "%SRC%" >nul
 echo Linked EmulationStation config file
 
-:: =====================================================
 :: CREATE EMULATIONSTATION MUSIC FOLDER LINK
-:: =====================================================
 echo.
 echo Creating EmulationStation music symbolic link
 echo Source: %SOURCE_ES_MUSIC%
@@ -173,9 +161,7 @@ echo All symbolic links created successfully.
 timeout /t 3 >nul
 exit /b
 
-:: =====================================================
 :: SYMBOLIC LINK DETECTION
-:: =====================================================
 :IS_SYMLINK
 fsutil reparsepoint query "%~1" >nul 2>&1
 exit /b %errorlevel%

@@ -31,9 +31,7 @@ echo  Press any key to continue...
 pause >nul
 cls
 
-:: ===============================
 :: Variables
-:: ===============================
 set "TEMPDIR=%TEMP%"
 
 set "RETROBATURL=https://github.com/RetroBat-Official/retrobat/releases/download/7.5.2/RetroBat-v7.5.2.1-stable-win64-setup.exe"
@@ -47,9 +45,7 @@ set "TEMPZIP=%TEMPDIR%\RetroX7.zip"
 set "DEST=C:\RetroX7"
 set "RETROBATDIR=C:\RetroBat"
 
-:: ===============================
 :: RetroBAT step
-:: ===============================
 cls
 echo ==================================================
 echo              RetroBAT installation
@@ -109,9 +105,7 @@ echo.
 :AFTER_RETROBAT
 cls
 
-:: ===============================
 :: WinFSP step
-:: ===============================
 echo ==================================================
 echo               WinFSP installation
 echo ==================================================
@@ -134,9 +128,7 @@ echo.
 
 cls
 
-:: ===============================
 :: RetroX7 step
-:: ===============================
 echo ==================================================
 echo              RetroX7 installation
 echo ==================================================
@@ -197,9 +189,7 @@ echo.
 echo.
 echo.
 
-:: ===============================
 :: Create Desktop Shortcuts
-:: ===============================
 cls
 echo ==================================================
 echo        Creating RetroX7 desktop shortcuts
@@ -215,9 +205,7 @@ if not exist "%SHORTCUT_SOURCE%" (
     goto END_SHORTCUT
 )
 
-:: ===============================
 :: User Desktop
-:: ===============================
 if exist "%USERPROFILE%\Desktop" (
     if not exist "%USERPROFILE%\Desktop\RetroX7.lnk" (
         copy /Y "%SHORTCUT_SOURCE%" "%USERPROFILE%\Desktop\" >nul
@@ -227,9 +215,7 @@ if exist "%USERPROFILE%\Desktop" (
     )
 )
 
-:: ===============================
 :: Public Desktop (All Users)
-:: ===============================
 if exist "C:\Users\Public\Desktop" (
     if not exist "C:\Users\Public\Desktop\RetroX7.lnk" (
         copy /Y "%SHORTCUT_SOURCE%" "C:\Users\Public\Desktop\" >nul
@@ -239,9 +225,7 @@ if exist "C:\Users\Public\Desktop" (
     )
 )
 
-:: ===============================
 :: OneDrive Desktop
-:: ===============================
 if exist "%USERPROFILE%\OneDrive\Desktop" (
     if not exist "%USERPROFILE%\OneDrive\Desktop\RetroX7.lnk" (
         copy /Y "%SHORTCUT_SOURCE%" "%USERPROFILE%\OneDrive\Desktop\" >nul

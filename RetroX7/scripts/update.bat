@@ -3,9 +3,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 title RetroX7 - Update
 
-:: ===============================
 :: Paths and URLs
-:: ===============================
 set "BASEDIR=C:\RetroX7"
 set "VERSION_FILE=%BASEDIR%\version.txt"
 
@@ -29,9 +27,7 @@ echo.
 echo ==================================================
 echo.
 
-:: ===============================
 :: PRE-CLEAN TEMP (IMPORTANT)
-:: ===============================
 echo Preparing update environment...
 echo Cleaning previous temporary files...
 echo.
@@ -46,9 +42,7 @@ if exist "%TEMPX7DIR%" (
     rmdir /s /q "%TEMPX7DIR%"
 )
 
-:: ===============================
 :: Download ZIP
-:: ===============================
 echo.
 echo Downloading update package...
 echo.
@@ -61,14 +55,10 @@ if not exist "%TEMPZIP%" (
     exit /b 1
 )
 
-:: ===============================
 :: Prepare temp folder
-:: ===============================
 mkdir "%TEMPX7DIR%"
 
-:: ===============================
 :: Extract ZIP to TEMP
-:: ===============================
 echo.
 echo Extracting update package...
 echo.
@@ -82,9 +72,7 @@ if not exist "%TEMPX7DIR%\RetroX7-main\RetroX7" (
     exit /b 1
 )
 
-:: ===============================
 :: Copy files (SAFE UPDATE)
-:: ===============================
 echo.
 echo Updating RetroX7 files...
 echo Existing files will be replaced if needed.
@@ -93,16 +81,12 @@ echo.
 
 xcopy "%TEMPX7DIR%\RetroX7-main\RetroX7\*" "%BASEDIR%\" /E /I /Y >nul
 
-:: ===============================
 :: Update version.txt
-:: ===============================
 echo.
 echo Updating version file...
 curl.exe -s -L "%GITHUB_VERSION_URL%" > "%VERSION_FILE%"
 
-:: ===============================
 :: Recreate symbolic links (POST-UPDATE)
-:: ===============================
 echo.
 echo Recreating symbolic links...
 echo.
@@ -115,9 +99,7 @@ if exist "%SYMLINK_SCRIPT%" (
     echo %SYMLINK_SCRIPT%
 )
 
-:: ===============================
 :: Cleanup TEMP (post-update)
-:: ===============================
 echo.
 echo Cleaning temporary files...
 echo.

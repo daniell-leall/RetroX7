@@ -4,9 +4,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 mode con: cols=180 lines=20
 title RetroX7 - Network Connection
 
-:: ===============================
 :: Paths
-:: ===============================
 set "BASEDIR=C:\RetroX7"
 set "RCLONEDIR=%BASEDIR%\rclone"
 set "MOUNTDIR=%BASEDIR%\mnt\sftpgo"
@@ -23,9 +21,7 @@ echo - Keep this window OPEN to stay connected.
 echo - Closing it will DISCONNECT the network.
 echo.
 
-:: ===============================
 :: Check active connection
-:: ===============================
 if exist "%MOUNTDIR%" (
     dir "%MOUNTDIR%" >nul 2>&1
     if not errorlevel 1 (
@@ -42,17 +38,13 @@ if exist "%MOUNTDIR%" (
     )
 )
 
-:: ===============================
 :: Prepare mount directory
-:: ===============================
 echo Removing existing mount directory...
 if exist "%MOUNTDIR%" (
     rmdir /s /q "%MOUNTDIR%"
 )
 
-:: ===============================
 :: Prepare cache directory
-:: ===============================
 if not exist "%CACHEDIR%" (
     mkdir "%CACHEDIR%" >nul 2>&1
 )
@@ -61,9 +53,7 @@ echo.
 echo Connecting to RetroX7 network...
 echo.
 
-:: ===============================
 :: Mount
-:: ===============================
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
@@ -76,9 +66,7 @@ echo.
     --log-level INFO ^
     --log-format date,time
 
-:: ===============================
 :: Disconnect message
-:: ===============================
 echo.
 echo ==================================================
 echo RetroX7 network DISCONNECTED
