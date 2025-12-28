@@ -79,14 +79,29 @@ echo Connecting to RetroX7 network...
 echo.
 
 :: Mount the network
+::"%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
+::    --config "%CONFIGFILE%" ^
+::    --cache-dir "%CACHEDIR%" ^
+::    --vfs-cache-mode full ^
+::    --vfs-cache-max-age 30d ^
+::    --vfs-cache-max-size 30G ^
+::    --vfs-read-chunk-size 32M ^
+::    --vfs-read-chunk-size-limit 2G ^
+::    --links ^
+::    --log-level INFO ^
+::    --log-format date,time
+
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
     --vfs-cache-mode full ^
     --vfs-cache-max-age 30d ^
     --vfs-cache-max-size 30G ^
-    --vfs-read-chunk-size 32M ^
-    --vfs-read-chunk-size-limit 2G ^
+    --vfs-read-chunk-size 8M ^
+    --vfs-read-chunk-size-limit 512M ^
+    --buffer-size 128M ^
+    --vfs-fast-fseek ^
+    --dir-cache-time 72h ^
     --links ^
     --log-level INFO ^
     --log-format date,time
