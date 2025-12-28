@@ -253,4 +253,4 @@ if errorlevel 1 (
 :EXIT
 cls
 echo Exiting RetroX7.
-exit /b
+exit
