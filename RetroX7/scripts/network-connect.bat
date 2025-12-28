@@ -4,21 +4,14 @@ setlocal EnableExtensions EnableDelayedExpansion
 mode con: cols=180 lines=18
 title RetroX7 - Network Connection
 
-:: Check internet and server connectivity first
-call "C:\RetroX7\scripts\check-connection.bat"
-if errorlevel 1 (
-    echo.
-    echo Connection check FAILED. Cannot proceed with network mount.
-    echo.
-    pause
-    exit /b 1
-)
-
-:: Verify configuration file exists
+:: Base paths
 set "BASEDIR=C:\RetroX7"
 set "RCLONEDIR=%BASEDIR%\rclone"
 set "CONFIGFILE=%BASEDIR%\rclone\.config\rclone.conf"
+set "MOUNTDIR=%BASEDIR%\mnt\sftpgo"
+set "CACHEDIR=%RCLONEDIR%\cache"
 
+:: 1) Verify configuration file exists (FAST / LOCAL)
 if not exist "%CONFIGFILE%" (
     cls
     echo ==================================================
@@ -30,24 +23,10 @@ if not exist "%CONFIGFILE%" (
     echo  Please configure your connection before proceeding.
     echo.
     pause
-    exit /b 1
+    exit
 )
 
-:: Paths for mount and cache
-set "MOUNTDIR=%BASEDIR%\mnt\sftpgo"
-set "CACHEDIR=%RCLONEDIR%\cache"
-
-cls
-echo ==================================================
-echo        Starting RetroX7 Network Connection
-echo ==================================================
-echo.
-echo  IMPORTANT:
-echo  - Keep this window OPEN to stay connected.
-echo  - Closing it will DISCONNECT the network.
-echo.
-
-:: Check if already connected
+:: 2) Check if already connected (FAST / LOCAL)
 if exist "%MOUNTDIR%" (
     dir "%MOUNTDIR%" >nul 2>&1
     if not errorlevel 1 (
@@ -60,9 +39,35 @@ if exist "%MOUNTDIR%" (
         echo ==================================================
         echo.
         pause
-        exit /b
+        exit
     )
 )
+
+:: 3) Check internet and server connectivity (SLOW)
+call "C:\RetroX7\scripts\check-connection.bat"
+if errorlevel 1 (
+    cls
+    echo ==================================================
+    echo        CONNECTION CHECK FAILED
+    echo ==================================================
+    echo.
+    echo  Internet or server is not available.
+    echo  Cannot proceed with network mount.
+    echo.
+    pause
+    exit
+)
+
+:: Start connection
+cls
+echo ==================================================
+echo        Starting RetroX7 Network Connection
+echo ==================================================
+echo.
+echo  IMPORTANT:
+echo  - Keep this window OPEN to stay connected.
+echo  - Closing it will DISCONNECT the network.
+echo.
 
 :: Prepare mount and cache directories
 echo Removing existing mount directory...
@@ -79,18 +84,6 @@ echo Connecting to RetroX7 network...
 echo.
 
 :: Mount the network
-::"%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
-::    --config "%CONFIGFILE%" ^
-::    --cache-dir "%CACHEDIR%" ^
-::    --vfs-cache-mode full ^
-::    --vfs-cache-max-age 30d ^
-::    --vfs-cache-max-size 30G ^
-::    --vfs-read-chunk-size 32M ^
-::    --vfs-read-chunk-size-limit 2G ^
-::    --links ^
-::    --log-level INFO ^
-::    --log-format date,time
-
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
@@ -106,9 +99,10 @@ echo.
     --log-format date,time
 
 :: Disconnect message
+cls
 echo.
 echo ==================================================
 echo RetroX7 network DISCONNECTED
 echo ==================================================
-pause
-exit /b
+timeout /t 2 >nul
+exit

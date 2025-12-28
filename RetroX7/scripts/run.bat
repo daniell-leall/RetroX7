@@ -165,8 +165,14 @@ call "%SCRIPTSDIR%\clean-cache.bat"
 
 echo.
 echo Cache cleaning completed.
-pause
+timeout /t 1 >nul
 goto SETTINGS
+
+
+
+
+
+
 
 :: Check for Updates (manual)
 :CHECK_UPDATES
@@ -205,8 +211,10 @@ echo.
 choice /C 12 /N /M ">> Select an option: "
 
 if errorlevel 2 goto SETTINGS
-if errorlevel 1 call "%SCRIPTSDIR%\update.bat"
-goto SETTINGS
+if errorlevel 1 (
+    start "" "%SCRIPTSDIR%\update.bat"
+    exit
+)
 
 :: Automatic update check (startup)
 :AUTO_CHECK_UPDATES
@@ -236,8 +244,10 @@ echo.
 choice /C 12 /N /M ">> Select an option: "
 
 if errorlevel 2 goto :EOF
-if errorlevel 1 call "%SCRIPTSDIR%\update.bat"
-goto :EOF
+if errorlevel 1 (
+    start "" "%SCRIPTSDIR%\update.bat"
+    exit
+)
 
 :: Exit
 :EXIT

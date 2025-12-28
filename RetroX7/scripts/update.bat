@@ -109,5 +109,9 @@ del /f /q "%TEMPZIP%"
 
 echo.
 echo RetroX7 update completed successfully!
-timeout /t 3 >nul
-exit /b
+echo.
+echo Relaunching RetroX7...
+timeout /t 2 >nul
+
+start "" "C:\RetroX7\run.bat"
+exit
