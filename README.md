@@ -38,24 +38,25 @@ RetroX7 is a simple installer and updater for a cloud-based retro gaming environ
 
 Currently all game counts are set to 0. Numbers will be updated gradually as the collection is added.
 
-`Atari - 2600 ....................... 0 games`  
-`Microsoft - DOS .................... 0 games`  
-`Nintendo - GBA ..................... 0 games`  
-`Nintendo - GBC ..................... 0 games`  
-`Nintendo - NES ..................... 0 games`  
-`Nintendo - N64 ..................... 0 games`  
-`Nintendo - SNES .................... 0 games`  
-`Nintendo - GameCube ................ 0 games`  
-`Sega - Dreamcast ................... 0 games`  
-`Sega - Master System ............... 0 games`  
-`Sega - Genesis ..................... 0 games`  
-`Sega - Game Gear ................... 0 games`  
-`Sega - Saturn ...................... 0 games`  
-`Sega - 32X ......................... 0 games`  
-`SNK - Neo Geo ...................... 0 games`  
-`Sony - PS1 ......................... 0 games`  
-`Sony - PS2 ......................... 0 games`  
-`Sony - PSP ......................... 0 games`    
+`Atari - 2600 ..................... 760 games`  
+`Microsoft - DOS ................. 1002 games`  
+`Nintendo - GBA ................... 905 games`  
+`Nintendo - GBC ................... 981 games`  
+`Nintendo - NES ................... 726 games`  
+`Nintendo - N64 ................... 408 games`  
+`Nintendo - SNES .................. 952 games`  
+`Sega - Dreamcast .................. 23 games`  
+`Sega - Master System ............. 536 games`  
+`Sega - Genesis ................... 960 games`  
+`Sega - Game Gear ................. 383 games`  
+`Sega - Saturn ..................... 14 games`  
+`Sega - 32X ........................ 38 games`  
+`SNK - Neo Geo .................... 203 games`  
+`Sony - PS1 ........................ 97 games`  
+`Sony - PS2 ........................ 44 games`  
+`Sony - PSP ........................ 22 games`    
+
+✅ Total: **8054** games.
 
 ## Objective
 
