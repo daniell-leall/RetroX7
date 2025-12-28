@@ -100,7 +100,6 @@ echo.
     --vfs-read-chunk-size 8M ^
     --vfs-read-chunk-size-limit 512M ^
     --buffer-size 128M ^
-    --vfs-fast-fseek ^
     --dir-cache-time 72h ^
     --links ^
     --log-level INFO ^
