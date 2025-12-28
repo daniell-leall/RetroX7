@@ -113,5 +113,5 @@ echo.
 echo Relaunching RetroX7...
 timeout /t 2 >nul
 
-start "" "C:\RetroX7\run.bat"
+start "" "C:\RetroX7\scripts\run.bat"
 exit
