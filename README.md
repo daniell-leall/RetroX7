@@ -56,7 +56,9 @@ Currently all game counts are set to 0. Numbers will be updated gradually as the
 `Sony - PS2 ........................ 44 games`  
 `Sony - PSP ........................ 22 games`    
 
-✅ Total: **8054** games.
+✅ Total:
+**8054** games.
+**17** consoles.
 
 ## Objective
 
