@@ -4,14 +4,18 @@ setlocal EnableExtensions EnableDelayedExpansion
 mode con: cols=180 lines=18
 title RetroX7 - Network Connection
 
+:: ==================================================
 :: Base paths
+:: ==================================================
 set "BASEDIR=C:\RetroX7"
 set "RCLONEDIR=%BASEDIR%\rclone"
 set "CONFIGFILE=%BASEDIR%\rclone\.config\rclone.conf"
 set "MOUNTDIR=%BASEDIR%\mnt\sftpgo"
 set "CACHEDIR=%RCLONEDIR%\cache"
 
+:: ==================================================
 :: 1) Verify configuration file exists (FAST / LOCAL)
+:: ==================================================
 if not exist "%CONFIGFILE%" (
     cls
     echo ==================================================
@@ -26,7 +30,9 @@ if not exist "%CONFIGFILE%" (
     exit
 )
 
+:: ==================================================
 :: 2) Check if already connected (FAST / LOCAL)
+:: ==================================================
 if exist "%MOUNTDIR%" (
     dir "%MOUNTDIR%" >nul 2>&1
     if not errorlevel 1 (
@@ -43,12 +49,14 @@ if exist "%MOUNTDIR%" (
     )
 )
 
+:: ==================================================
 :: 3) Check internet and server connectivity (SLOW)
+:: ==================================================
 call "C:\RetroX7\scripts\check-connection.bat"
 if errorlevel 1 (
     cls
     echo ==================================================
-    echo        CONNECTION CHECK FAILED
+    echo             CONNECTION CHECK FAILED
     echo ==================================================
     echo.
     echo  Internet or server is not available.
@@ -58,7 +66,36 @@ if errorlevel 1 (
     exit
 )
 
-:: Start connection
+:: ==================================================
+:: 4) Validate authentication (credentials may be expired)
+:: ==================================================
+"%RCLONEDIR%\rclone.exe" lsd SFTPGo: ^
+    --config "%CONFIGFILE%" ^
+    --log-level ERROR >nul 2>&1
+
+if errorlevel 1 (
+    cls
+    echo ==================================================
+    echo        CONNECTION FAILED
+    echo ==================================================
+    echo.
+    echo  Unable to authenticate with the server.
+    echo.
+    echo  Possible reasons:
+    echo   - Access expired or credentials invalid
+    echo   - Account blocked or disabled
+    echo.
+    echo  Next steps:
+    echo   - Update your credentials and try again
+    echo   - If the issue persists, contact the administrator
+    echo.
+    pause
+    exit
+)
+
+:: ==================================================
+:: 5) Start connection
+:: ==================================================
 cls
 echo ==================================================
 echo        Starting RetroX7 Network Connection
@@ -69,7 +106,9 @@ echo  - Keep this window OPEN to stay connected.
 echo  - Closing it will DISCONNECT the network.
 echo.
 
+:: ==================================================
 :: Prepare mount and cache directories
+:: ==================================================
 echo Removing existing mount directory...
 if exist "%MOUNTDIR%" (
     rmdir /s /q "%MOUNTDIR%"
@@ -83,7 +122,9 @@ echo.
 echo Connecting to RetroX7 network...
 echo.
 
-:: Mount the network v4
+:: ==================================================
+:: Mount the network v4 (ACTIVE)
+:: ==================================================
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
@@ -99,7 +140,10 @@ echo.
     --log-format date,time
 
 goto :DISABLED_FEATURE
-:: Mount the network v5
+
+:: ==================================================
+:: Mount the network v5 (DISABLED)
+:: ==================================================
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
@@ -124,7 +168,9 @@ goto :DISABLED_FEATURE
 
 :DISABLED_FEATURE
 
+:: ==================================================
 :: Disconnect message
+:: ==================================================
 cls
 echo.
 echo ==================================================
