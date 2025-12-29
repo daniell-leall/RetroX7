@@ -83,20 +83,46 @@ echo.
 echo Connecting to RetroX7 network...
 echo.
 
-:: Mount the network
+:: Mount the network v4
 "%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
     --config "%CONFIGFILE%" ^
     --cache-dir "%CACHEDIR%" ^
     --vfs-cache-mode full ^
     --vfs-cache-max-age 30d ^
     --vfs-cache-max-size 30G ^
-    --vfs-read-chunk-size 8M ^
-    --vfs-read-chunk-size-limit 512M ^
-    --buffer-size 128M ^
+    --vfs-read-chunk-size 32M ^
+    --vfs-read-chunk-size-limit 2G ^
+    --buffer-size 64M ^
     --dir-cache-time 72h ^
     --links ^
     --log-level INFO ^
     --log-format date,time
+
+goto :DISABLED_FEATURE
+:: Mount the network v5
+"%RCLONEDIR%\rclone.exe" mount SFTPGo: "%MOUNTDIR%" ^
+    --config "%CONFIGFILE%" ^
+    --cache-dir "%CACHEDIR%" ^
+    --vfs-cache-mode full ^
+    --vfs-cache-max-age 7d ^
+    --vfs-cache-max-size 50G ^
+    --vfs-read-chunk-size 64M ^
+    --vfs-read-chunk-size-limit 4G ^
+    --buffer-size 128M ^
+    --vfs-read-ahead 1G ^
+    --dir-cache-time 24h ^
+    --fast-list ^
+    --drive-chunk-size 128M ^
+    --tpslimit 10 ^
+    --tpslimit-burst 10 ^
+    --transfers 8 ^
+    --checkers 16 ^
+    --links ^
+    --log-level INFO ^
+    --log-format date,time ^
+    --stats 10s
+
+:DISABLED_FEATURE
 
 :: Disconnect message
 cls
