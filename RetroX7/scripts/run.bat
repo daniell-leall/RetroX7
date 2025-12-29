@@ -30,7 +30,7 @@ call :AUTO_CHECK_UPDATES
 if not exist "%CONFIGFLAG%" (
     cls
     echo ==================================================
-    echo RetroX7 first-time setup required
+    echo         RetroX7 first-time setup required
     echo ==================================================
     echo.
     echo No network configuration was found.
@@ -124,7 +124,7 @@ goto MENU
 :RECONFIGURE
 cls
 echo ==================================================
-echo Reconfiguring RetroX7 connection
+echo         Reconfiguring RetroX7 connection
 echo ==================================================
 call "%SCRIPTSDIR%\first-run.bat"
 
@@ -137,7 +137,7 @@ goto SETTINGS
 :RECONFIGURE_FOLDERS
 cls
 echo ==================================================
-echo Reconfiguring RetroX7 folders
+echo           Reconfiguring RetroX7 folders
 echo ==================================================
 call "%SCRIPTSDIR%\create-symlinks.bat"
 goto SETTINGS
@@ -146,7 +146,7 @@ goto SETTINGS
 :RESET_RETROBAT
 cls
 echo ==================================================
-echo Resetting RetroBat to default settings
+echo       Resetting RetroBat to default settings
 echo ==================================================
 call "%SCRIPTSDIR%\reset-retrobat.bat"
 goto SETTINGS
@@ -167,12 +167,6 @@ echo.
 echo Cache cleaning completed.
 timeout /t 1 >nul
 goto SETTINGS
-
-
-
-
-
-
 
 :: Check for Updates (manual)
 :CHECK_UPDATES
