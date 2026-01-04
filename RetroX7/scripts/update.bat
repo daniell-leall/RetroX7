@@ -3,7 +3,8 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 title RetroX7 - Update
 
-:: Paths and URLs
+:: ================= CONFIGURAÇÃO =================
+
 set "BASEDIR=C:\RetroX7"
 set "VERSION_FILE=%BASEDIR%\version.txt"
 
@@ -13,7 +14,6 @@ set "TEMPX7DIR=%TEMP%\RetroX7_update"
 set "GITHUB_ZIP_URL=https://github.com/daniell-leall/RetroX7/archive/refs/heads/main.zip"
 set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/daniell-leall/RetroX7/refs/heads/main/RetroX7/version.txt"
 
-:: Script to recreate symbolic links (POST-UPDATE)
 set "SYMLINK_SCRIPT=C:\RetroX7\scripts\create-symlinks.bat"
 
 cls
@@ -27,38 +27,39 @@ echo.
 echo ==================================================
 echo.
 
-:: PRE-CLEAN TEMP (IMPORTANT)
+:: ================= PRE-CLEAN =================
+
 echo Preparing update environment...
 echo Cleaning previous temporary files...
 echo.
 
 if exist "%TEMPZIP%" (
-    echo Removing old ZIP...
     del /f /q "%TEMPZIP%"
 )
 
 if exist "%TEMPX7DIR%" (
-    echo Removing old extracted folder...
     rmdir /s /q "%TEMPX7DIR%"
 )
 
-:: Download ZIP
-echo.
+:: ================= DOWNLOAD =================
+
 echo Downloading update package...
 echo.
 
 curl.exe -L --progress-bar -o "%TEMPZIP%" "%GITHUB_ZIP_URL%"
 
 if not exist "%TEMPZIP%" (
+    echo.
     echo ERROR: Failed to download update package.
+    echo.
     pause
     exit /b 1
 )
 
-:: Prepare temp folder
+:: ================= EXTRACT =================
+
 mkdir "%TEMPX7DIR%"
 
-:: Extract ZIP to TEMP
 echo.
 echo Extracting update package...
 echo.
@@ -67,12 +68,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
 "Expand-Archive -Path '%TEMPZIP%' -DestinationPath '%TEMPX7DIR%' -Force"
 
 if not exist "%TEMPX7DIR%\RetroX7-main\RetroX7" (
-    echo ERROR: Expected RetroX7 folder structure not found.
+    echo.
+    echo ERROR: Invalid update package structure.
+    echo.
     pause
     exit /b 1
 )
 
-:: Copy files (SAFE UPDATE)
+:: ================= UPDATE FILES =================
+
 echo.
 echo Updating RetroX7 files...
 echo Existing files will be replaced if needed.
@@ -81,12 +85,14 @@ echo.
 
 xcopy "%TEMPX7DIR%\RetroX7-main\RetroX7\*" "%BASEDIR%\" /E /I /Y >nul
 
-:: Update version.txt
+:: ================= VERSION =================
+
 echo.
-echo Updating version file...
+echo Updating version information...
 curl.exe -s -L "%GITHUB_VERSION_URL%" > "%VERSION_FILE%"
 
-:: Recreate symbolic links (POST-UPDATE)
+:: ================= SYMLINKS =================
+
 echo.
 echo Recreating symbolic links...
 echo.
@@ -95,11 +101,11 @@ if exist "%SYMLINK_SCRIPT%" (
     call "%SYMLINK_SCRIPT%"
     echo Symbolic links recreated successfully.
 ) else (
-    echo WARNING: Symbolic link script not found:
-    echo %SYMLINK_SCRIPT%
+    echo WARNING: Symbolic link script not found.
 )
 
-:: Cleanup TEMP (post-update)
+:: ================= CLEANUP =================
+
 echo.
 echo Cleaning temporary files...
 echo.
@@ -107,11 +113,23 @@ echo.
 rmdir /s /q "%TEMPX7DIR%"
 del /f /q "%TEMPZIP%"
 
-echo.
-echo RetroX7 update completed successfully!
-echo.
-echo Relaunching RetroX7...
-timeout /t 2 >nul
+:: ================= FINAL SCREEN =================
 
-start "" "C:\RetroX7\scripts\run.bat"
+cls
+echo ==================================================
+echo            RetroX7 Update Completed
+echo ==================================================
+echo.
+echo The update was installed successfully.
+echo.
+echo IMPORTANT:
+echo To apply all changes correctly,
+echo RetroX7 must be restarted.
+echo.
+echo Please close this window and
+echo launch RetroX7 again.
+echo.
+echo ==================================================
+echo.
+pause
 exit
