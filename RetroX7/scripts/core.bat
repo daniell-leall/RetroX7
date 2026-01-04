@@ -30,26 +30,17 @@ if "%ACTION%"=="reset_retrobat" goto RESET_RETROBAT
 if "%ACTION%"=="clean_cache" goto CLEAN_CACHE
 if "%ACTION%"=="check_updates_manual" goto CHECK_UPDATES_MANUAL
 
-goto :EOF
+exit /b 0
 
 :: ================= INIT (ANTES DO MENU) =================
 
 :INIT
 call "%SCRIPTSDIR%\check-connection.bat"
-if errorlevel 1 exit /b
+if errorlevel 1 exit /b 1
 
-call :AUTO_CHECK_UPDATES
-
-if not exist "%CONFIGFLAG%" (
-    cls
-    echo ==================================================
-    echo        RetroX7 first-time configuration
-    echo ==================================================
-    echo.
-    call "%SCRIPTSDIR%\first-run.bat"
-    call "%SCRIPTSDIR%\create-symlinks.bat"
-)
-goto :EOF
+:: Apenas verifica — NÃO atualiza
+call :CHECK_UPDATES
+exit /b %ERRORLEVEL%
 
 :: ================= SESSÃO PRINCIPAL =================
 
@@ -60,96 +51,61 @@ echo   Starting RetroX7 Network + RetroBat Session
 echo ==================================================
 echo.
 
-:: 1. Conecta a rede
 start "RetroX7 Network" "%SCRIPTSDIR%\network-connect.bat"
-
-:: Aguarda estabilizar
 timeout /t 3 >nul
 
-:: 2. Verifica RetroBat
 if not exist "%RETROBATEXE%" (
     echo RetroBat was not found at:
     echo %RETROBATEXE%
-    echo.
     pause
     call "%SCRIPTSDIR%\network-disconnect.bat"
-    goto :EOF
+    exit /b 1
 )
 
-:: 3. Inicia RetroBat
-echo Launching RetroBat...
 start "" "%RETROBATEXE%"
 
-:: 4. Aguarda EmulationStation iniciar
-echo Waiting for EmulationStation...
 :WAIT_EMUSTATION_START
-tasklist | find /i "%EMUSTATION_EXE%" >nul
-if errorlevel 1 (
+tasklist | find /i "%EMUSTATION_EXE%" >nul || (
     timeout /t 1 >nul
     goto WAIT_EMUSTATION_START
 )
 
-:: 5. Aguarda EmulationStation fechar
-echo EmulationStation running. Monitoring session...
 :WAIT_EMUSTATION_CLOSE
-tasklist | find /i "%EMUSTATION_EXE%" >nul
-if not errorlevel 1 (
+tasklist | find /i "%EMUSTATION_EXE%" >nul && (
     timeout /t 2 >nul
     goto WAIT_EMUSTATION_CLOSE
 )
 
-:: 6. Sessão encerrada → desconecta a rede
-echo.
-echo RetroBat session ended. Disconnecting network...
 call "%SCRIPTSDIR%\network-disconnect.bat"
+exit /b 0
 
-timeout /t 1 >nul
-goto :EOF
-
-:: ================= SETTINGS ACTIONS =================
+:: ================= SETTINGS =================
 
 :RECONFIGURE_NETWORK
-cls
-echo ==================================================
-echo     Reconfiguring RetroX7 Network Connection
-echo ==================================================
-echo.
 call "%SCRIPTSDIR%\first-run.bat"
 call "%SCRIPTSDIR%\create-symlinks.bat"
-goto :EOF
+exit /b 0
 
 :REBUILD_LINKS
-cls
-echo ==================================================
-echo       Rebuilding RetroX7 Links and Folders
-echo ==================================================
-echo.
 call "%SCRIPTSDIR%\create-symlinks.bat"
-goto :EOF
+exit /b 0
 
 :RESET_RETROBAT
-cls
-echo ==================================================
-echo     Resetting RetroBat to Default Configuration
-echo ==================================================
-echo.
 call "%SCRIPTSDIR%\reset-retrobat.bat"
-goto :EOF
+exit /b 0
 
 :CLEAN_CACHE
-cls
-echo ==================================================
-echo           Cleaning RetroX7 Cache
-echo ==================================================
-echo.
 call "%SCRIPTSDIR%\clean-cache.bat"
-goto :EOF
+exit /b 0
 
-:: ================= UPDATE SYSTEM =================
+:: ================= UPDATE CHECK =================
+:: Retornos:
+:: 0  = Sem update
+:: 10 = Update disponível
 
 :CHECK_UPDATES_MANUAL
 call :CHECK_UPDATES
-goto :EOF
+exit /b %ERRORLEVEL%
 
 :CHECK_UPDATES
 if exist "%VERSION_FILE%" (
@@ -163,30 +119,7 @@ set /p REMOTE_VERSION=<"%TEMP_REMOTE_VERSION%"
 del "%TEMP_REMOTE_VERSION%"
 
 if "%LOCAL_VERSION%"=="%REMOTE_VERSION%" (
-    echo Latest version already installed.
-    timeout /t 1 >nul
-    goto :EOF
+    exit /b 0
 )
 
-cls
-echo ==================================================
-echo            RetroX7 Update Available
-echo ==================================================
-echo.
-echo Local version : %LOCAL_VERSION%
-echo Remote version: %REMOTE_VERSION%
-echo.
-echo Starting update...
-echo RetroX7 will now close.
-echo.
-
-timeout /t 2 >nul
-
-start "" "%SCRIPTSDIR%\update.bat"
-
-:: CORE FINALIZA — UPDATE ASSUME CONTROLE TOTAL
-exit /b
-
-:AUTO_CHECK_UPDATES
-call :CHECK_UPDATES
-goto :EOF
+exit /b 10
