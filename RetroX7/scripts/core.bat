@@ -42,6 +42,14 @@ if errorlevel 1 exit /b 1
 call :CHECK_UPDATES
 exit /b %ERRORLEVEL%
 
+
+
+
+
+
+
+
+
 :: ================= SESSÃO PRINCIPAL =================
 
 :START_FULL_SESSION
@@ -51,8 +59,15 @@ echo   Starting RetroX7 Network + RetroBat Session
 echo ==================================================
 echo.
 
-start "RetroX7 Network" "%SCRIPTSDIR%\network-connect.bat"
-timeout /t 3 >nul
+for /f "tokens=2 delims==;" %%P in (
+    'wmic process call create "cmd.exe /c \"%SCRIPTSDIR%\network-connect.bat\"" ^| find "ProcessId"'
+) do set "NET_PID=%%P"
+
+timeout /t 7 >nul
+
+powershell -NoProfile -Command "$sig = '[DllImport(\"user32.dll\")]public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);';" "Add-Type -MemberDefinition $sig -Name Win -Namespace Native;" "$p = Get-Process -Id %NET_PID% -ErrorAction SilentlyContinue;" "if($p){ [Native.Win]::ShowWindowAsync($p.MainWindowHandle, 6) }"
+
+timeout /t 1 >nul
 
 if not exist "%RETROBATEXE%" (
     echo RetroBat was not found at:
@@ -72,12 +87,27 @@ tasklist | find /i "%EMUSTATION_EXE%" >nul || (
 
 :WAIT_EMUSTATION_CLOSE
 tasklist | find /i "%EMUSTATION_EXE%" >nul && (
-    timeout /t 2 >nul
+    timeout /t 1 >nul
     goto WAIT_EMUSTATION_CLOSE
 )
 
+powershell -NoProfile -Command "$sig = '[DllImport(\"user32.dll\")]public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);';" "Add-Type -MemberDefinition $sig -Name Win -Namespace Native;" "$p = Get-Process -Id %NET_PID% -ErrorAction SilentlyContinue;" "if($p){ [Native.Win]::ShowWindowAsync($p.MainWindowHandle, 9) }"
+
+timeout /t 2 >nul
 call "%SCRIPTSDIR%\network-disconnect.bat"
 exit /b 0
+
+
+
+
+
+
+
+
+
+
+
+
 
 :: ================= SETTINGS =================
 
