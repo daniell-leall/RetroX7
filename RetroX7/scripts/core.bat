@@ -42,14 +42,6 @@ if errorlevel 1 exit /b 1
 call :CHECK_UPDATES
 exit /b %ERRORLEVEL%
 
-
-
-
-
-
-
-
-
 :: ================= SESSÃO PRINCIPAL =================
 
 :START_FULL_SESSION
@@ -59,9 +51,9 @@ echo   Starting RetroX7 Network + RetroBat Session
 echo ==================================================
 echo.
 
-for /f "tokens=2 delims==;" %%P in (
-    'wmic process call create "cmd.exe /c \"%SCRIPTSDIR%\network-connect.bat\"" ^| find "ProcessId"'
-) do set "NET_PID=%%P"
+for /f "delims=" %%P in ('
+    powershell -command "$p = Start-Process cmd.exe -ArgumentList '/c \"%SCRIPTSDIR%\network-connect.bat\"' -PassThru; $p.Id"
+') do set "NET_PID=%%P"
 
 timeout /t 7 >nul
 
@@ -96,18 +88,6 @@ powershell -NoProfile -Command "$sig = '[DllImport(\"user32.dll\")]public static
 timeout /t 2 >nul
 call "%SCRIPTSDIR%\network-disconnect.bat"
 exit /b 0
-
-
-
-
-
-
-
-
-
-
-
-
 
 :: ================= SETTINGS =================
 
