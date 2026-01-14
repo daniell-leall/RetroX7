@@ -66,12 +66,16 @@ echo.
 
 timeout /t 2 >nul
 
-if exist "%BASEDIR%\run.bat" (
-    start "" "%BASEDIR%\run.bat"
+set "SCRIPTSDIR=%BASEDIR%\scripts"
+
+if exist "%SCRIPTSDIR%\run.bat" (
+    start "" "%SCRIPTSDIR%\run.bat"
 ) else (
     echo ERROR: run.bat not found after update.
+    echo Expected path: %SCRIPTSDIR%\run.bat
     pause
 )
 
-exit
+exit /b
+
 

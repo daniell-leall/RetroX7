@@ -56,7 +56,7 @@ choice /C 12 /N /M ">> Select an option: "
 if errorlevel 2 goto MENU
 if errorlevel 1 (
     call "%SCRIPTSDIR%\start-update.bat"
-    exit
+    goto MENU
 )
 
 :: ================= SETTINGS =================
@@ -120,7 +120,7 @@ choice /C 12 /N /M ">> Select an option: "
 if errorlevel 2 goto SETTINGS
 if errorlevel 1 (
     call "%SCRIPTSDIR%\start-update.bat"
-    exit
+    goto MENU
 )
 
 :NO_UPDATE
