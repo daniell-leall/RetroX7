@@ -125,7 +125,13 @@ if errorlevel 1 (
 
 :NO_UPDATE
 cls
-echo You already have the latest version.
+echo ==================================================
+echo              RetroX7 Update Status
+echo ==================================================
 echo.
-pause
+echo  You are already running the latest version.
+echo.
+echo  Returning to Settings menu...
+echo.
+timeout /t 3 >nul
 goto SETTINGS
