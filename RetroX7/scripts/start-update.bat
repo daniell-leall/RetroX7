@@ -61,21 +61,9 @@ echo            RetroX7 Update Completed
 echo ==================================================
 echo.
 echo  Update completed successfully.
-echo  Restarting RetroX7...
+echo.
+echo  Returning to RetroX7 menu...
 echo.
 
 timeout /t 2 >nul
-
-set "SCRIPTSDIR=%BASEDIR%\scripts"
-
-if exist "%SCRIPTSDIR%\run.bat" (
-    start "" "%SCRIPTSDIR%\run.bat"
-) else (
-    echo ERROR: run.bat not found after update.
-    echo Expected path: %SCRIPTSDIR%\run.bat
-    pause
-)
-
 exit /b
-
-
