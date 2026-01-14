@@ -6,7 +6,7 @@ title RetroX7 - Connection Check
 :CHECK_CONNECTION
 cls
 echo ==================================================
-echo           RetroX7 - Connection Check
+echo            RetroX7 - Connection Check
 echo ==================================================
 echo.
 
@@ -25,7 +25,7 @@ if %SERVER_EXITCODE% neq 0 goto SERVER_ERROR
 
 echo.
 echo ==================================================
-echo               Connection successful
+echo                Connection successful
 echo ==================================================
 timeout /t 2 >nul
 exit /b 0
@@ -33,7 +33,7 @@ exit /b 0
 :INTERNET_ERROR
 echo.
 echo ==================================================
-echo              NO INTERNET CONNECTION
+echo               NO INTERNET CONNECTION
 echo ==================================================
 echo.
 echo  RetroX7 requires an active internet connection.

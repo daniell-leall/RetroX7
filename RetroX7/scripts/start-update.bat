@@ -77,9 +77,9 @@ echo ==================================================
 echo            RetroX7 Update Completed
 echo ==================================================
 echo.
-echo The update was installed successfully.
+echo  The update was installed successfully.
 echo.
-echo IMPORTANT: Please restart RetroX7 to apply changes.
+echo  IMPORTANT: Please reopen RetroX7 to apply changes.
 echo.
-pause
+timeout /t 5 >nul
 exit

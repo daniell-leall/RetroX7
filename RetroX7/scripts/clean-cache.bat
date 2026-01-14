@@ -9,7 +9,7 @@ set "KEEP_FILE=.gitkeep"
 
 cls
 echo ==================================================
-echo        Cleaning Cache
+echo                 Cleaning Cache
 echo ==================================================
 echo.
 

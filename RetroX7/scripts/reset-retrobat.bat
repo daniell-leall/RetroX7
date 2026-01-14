@@ -41,7 +41,7 @@ echo neogeo=SNK - Neo Geo\roms
 :: RESET RetroBat (Verbose)
 cls
 echo ===============================================
-echo Restoring default RetroBat structure
+echo      Restoring default RetroBat structure
 echo ===============================================
 echo.
 

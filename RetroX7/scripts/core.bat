@@ -45,7 +45,7 @@ set "UPD=%ERRORLEVEL%"
 
 :: ================= CHECK FIRST RUN =================
 if not exist "%CONFIGFLAG%" (
-    call "%SCRIPTSDIR%\first-run.bat"
+    call "%SCRIPTSDIR%\configure-network.bat"
     if errorlevel 1 exit /b 1
 )
 
@@ -58,7 +58,7 @@ exit /b %UPD%
 :START_FULL_SESSION
 cls
 echo ==================================================
-echo   Starting RetroX7 Network + RetroBat Session
+echo    Starting RetroX7 Network + RetroBat Session
 echo ==================================================
 echo.
 
@@ -103,7 +103,7 @@ exit /b 0
 :: ================= SETTINGS =================
 
 :RECONFIGURE_NETWORK
-call "%SCRIPTSDIR%\first-run.bat"
+call "%SCRIPTSDIR%\configure-network.bat"
 call "%SCRIPTSDIR%\create-symlinks.bat"
 exit /b 0
 

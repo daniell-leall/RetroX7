@@ -76,7 +76,7 @@ if errorlevel 1 (
 if errorlevel 1 (
     cls
     echo ==================================================
-    echo        CONNECTION FAILED
+    echo                CONNECTION FAILED
     echo ==================================================
     echo.
     echo  Unable to authenticate with the server.
@@ -174,7 +174,7 @@ goto :DISABLED_FEATURE
 cls
 echo.
 echo ==================================================
-echo RetroX7 network DISCONNECTED
+echo           RetroX7 network DISCONNECTED
 echo ==================================================
 timeout /t 2 >nul
 exit
