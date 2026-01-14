@@ -62,7 +62,9 @@ echo ==================================================
 echo.
 echo  The update was installed successfully.
 echo.
-echo  IMPORTANT: Please reopen RetroX7 to apply changes.
+echo  IMPORTANT:
+echo  Please close this window and reopen RetroX7
+echo  to apply the latest changes.
 echo.
-timeout /t 5 >nul
+timeout /t 15 >nul
 exit
