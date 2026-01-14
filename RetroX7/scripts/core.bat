@@ -35,12 +35,23 @@ exit /b 0
 :: ================= INIT (ANTES DO MENU) =================
 
 :INIT
+:: ================= CHECK CONNECTION =================
 call "%SCRIPTSDIR%\check-connection.bat"
 if errorlevel 1 exit /b 1
 
-:: Apenas verifica — NÃO atualiza
+:: ================= CHECK UPDATES (APENAS VERIFICA) =================
 call :CHECK_UPDATES
-exit /b %ERRORLEVEL%
+set "UPD=%ERRORLEVEL%"
+
+:: ================= CHECK FIRST RUN =================
+if not exist "%CONFIGFLAG%" (
+    call "%SCRIPTSDIR%\first-run.bat"
+    if errorlevel 1 exit /b 1
+)
+
+:: Retorna o resultado do update para o run.bat
+exit /b %UPD%
+
 
 :: ================= SESSÃO PRINCIPAL =================
 
