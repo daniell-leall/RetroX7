@@ -25,8 +25,6 @@ set ACTION=%1
 if "%ACTION%"=="init" goto INIT
 if "%ACTION%"=="start_full_session" goto START_FULL_SESSION
 if "%ACTION%"=="reconfigure_network" goto RECONFIGURE_NETWORK
-if "%ACTION%"=="rebuild_links" goto REBUILD_LINKS
-if "%ACTION%"=="reset_retrobat" goto RESET_RETROBAT
 if "%ACTION%"=="clean_cache" goto CLEAN_CACHE
 if "%ACTION%"=="check_updates_manual" goto CHECK_UPDATES_MANUAL
 
@@ -62,6 +60,7 @@ echo    Starting RetroX7 Network + RetroBat Session
 echo ==================================================
 echo.
 
+:: Starts network-connect in a separate window and stores its PID
 for /f "delims=" %%P in ('
     powershell -command "$p = Start-Process cmd.exe -ArgumentList '/c \"%SCRIPTSDIR%\network-connect.bat\"' -PassThru; $p.Id"
 ') do set "NET_PID=%%P"
@@ -71,6 +70,19 @@ timeout /t 7 >nul
 powershell -NoProfile -Command "$sig = '[DllImport(\"user32.dll\")]public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);';" "Add-Type -MemberDefinition $sig -Name Win -Namespace Native;" "$p = Get-Process -Id %NET_PID% -ErrorAction SilentlyContinue;" "if($p){ [Native.Win]::ShowWindowAsync($p.MainWindowHandle, 6) }"
 
 timeout /t 1 >nul
+
+call "%SCRIPTSDIR%\create-symlinks.bat"
+
+cls
+echo ==================================================
+echo   RetroX7 session running - RetroBat active
+echo ==================================================
+echo.
+echo  RetroBat is running in the background.
+echo.
+echo  When RetroBat is closed, the system will disconnect
+echo  and the RetroX7 menu will return automatically.
+echo.
 
 if not exist "%RETROBATEXE%" (
     echo RetroBat was not found at:
@@ -97,6 +109,7 @@ tasklist | find /i "%EMUSTATION_EXE%" >nul && (
 powershell -NoProfile -Command "$sig = '[DllImport(\"user32.dll\")]public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);';" "Add-Type -MemberDefinition $sig -Name Win -Namespace Native;" "$p = Get-Process -Id %NET_PID% -ErrorAction SilentlyContinue;" "if($p){ [Native.Win]::ShowWindowAsync($p.MainWindowHandle, 9) }"
 
 timeout /t 2 >nul
+call "%SCRIPTSDIR%\remove-symlinks.bat"
 call "%SCRIPTSDIR%\network-disconnect.bat"
 exit /b 0
 
@@ -104,15 +117,6 @@ exit /b 0
 
 :RECONFIGURE_NETWORK
 call "%SCRIPTSDIR%\configure-network.bat"
-call "%SCRIPTSDIR%\create-symlinks.bat"
-exit /b 0
-
-:REBUILD_LINKS
-call "%SCRIPTSDIR%\create-symlinks.bat"
-exit /b 0
-
-:RESET_RETROBAT
-call "%SCRIPTSDIR%\reset-retrobat.bat"
 exit /b 0
 
 :CLEAN_CACHE

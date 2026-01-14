@@ -67,26 +67,16 @@ echo                 RetroX7 Settings
 echo ==================================================
 echo.
 echo   [1] Reconfigure Network Connection
-echo   [2] Rebuild RetroX7 Links ^& Folders
-echo   [3] Reset RetroBat to Default Settings
-echo   [4] Clean Cache
-echo   [5] Check for Updates
+echo   [2] Clean Cache
+echo   [3] Check for Updates
 echo   [0] Back to Main Menu
 echo.
-choice /C 123450 /N /M ">> Select an option: "
+choice /C 1230 /N /M ">> Select an option: "
 
-if errorlevel 6 goto MENU
-if errorlevel 5 goto UPDATE_MENU
-if errorlevel 4 (
-    call "%SCRIPTSDIR%\core.bat" clean_cache
-    goto SETTINGS
-)
-if errorlevel 3 (
-    call "%SCRIPTSDIR%\core.bat" reset_retrobat
-    goto SETTINGS
-)
+if errorlevel 4 goto MENU
+if errorlevel 3 goto UPDATE_MENU
 if errorlevel 2 (
-    call "%SCRIPTSDIR%\core.bat" rebuild_links
+    call "%SCRIPTSDIR%\core.bat" clean_cache
     goto SETTINGS
 )
 if errorlevel 1 (
