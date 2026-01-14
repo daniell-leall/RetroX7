@@ -61,8 +61,17 @@ echo            RetroX7 Update Completed
 echo ==================================================
 echo.
 echo  Update completed successfully.
-echo  Returning to RetroX7 menu...
+echo  Restarting RetroX7...
 echo.
+
 timeout /t 2 >nul
-exit /b
+
+if exist "%BASEDIR%\run.bat" (
+    start "" "%BASEDIR%\run.bat"
+) else (
+    echo ERROR: run.bat not found after update.
+    pause
+)
+
+exit
 
